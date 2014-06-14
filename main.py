@@ -15,12 +15,27 @@
 # limitations under the License.
 #
 import webapp2
+
 import tweepy
+import json
+import urllib
+import ConfigParser
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        self.response.write('Hello world!')
+        repos = getRepos()
+        self.response.write(json.dumps(repos[4]["title"]["text"]))
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler)
 ], debug=True)
+
+def getRepos():
+    # get api key from config
+    config = ConfigParser.RawConfigParser()
+    config.read('settings.cfg')
+    API_KEY = config.get('Kimono','API_KEY')
+
+    #fetch data from api
+    data = json.load(urllib.urlopen("http://www.kimonolabs.com/api/ci1ld6i6?apikey=" + API_KEY))
+    return data["results"]["repository"]
