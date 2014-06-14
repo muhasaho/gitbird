@@ -25,17 +25,33 @@ import random
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        repos = getRepos()
-        index = random.randint(0,25)
-        description = truncate(repos[index]["description"],75)
-        link = repos[index]["title"]["href"]
-        message = description + " - " + link
-        #post = postStatus("Hello Twitter")
+        message = "I'm working!!"
         self.response.write(message)
         #self.response.write(len(repos))
 
+class TweetHandler(webapp2.RequestHandler):
+    def get(self):
+        repos = getRepos()
+
+        do_work = True
+        while do_work:
+            try:
+                index = random.randint(0,25)
+                description = truncate(repos[index]["description"],75)
+                link = repos[index]["title"]["href"]
+                do_work = False
+            except IndexError:
+                do_work = True
+                
+        message = description + " - " + link
+
+        # post and return
+        #post = postStatus(message)
+        self.response.write(message)
+
 app = webapp2.WSGIApplication([
-    ('/', MainHandler)
+    ('/', MainHandler),
+    ('/tweet', TweetHandler)
 ], debug=True)
 
 
