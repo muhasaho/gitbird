@@ -29,10 +29,13 @@ class MainHandler(webapp2.RequestHandler):
         self.response.write(message)
         #self.response.write(len(repos))
 
+# gets trending repositories and tweets a random one
 class TweetHandler(webapp2.RequestHandler):
     def get(self):
+        # get repositories
         repos = getRepos()
 
+        # pick random repo
         do_work = True
         while do_work:
             try:
@@ -42,11 +45,11 @@ class TweetHandler(webapp2.RequestHandler):
                 do_work = False
             except IndexError:
                 do_work = True
-                
+
         message = description + " - " + link
 
         # post and return
-        #post = postStatus(message)
+        post = postStatus(message)
         self.response.write(message)
 
 app = webapp2.WSGIApplication([
@@ -62,8 +65,7 @@ def getRepos():
     config.read('settings.cfg')
     API_KEY = config.get('Kimono','API_KEY')
 
-    #fetch data from api
-    #data = json.load(urllib.urlopen("http://www.kimonolabs.com/api/ci1ld6i6?apikey=" + API_KEY))
+    # fetch data from api
     response = urlopen("http://www.kimonolabs.com/api/ci1ld6i6?apikey=" + API_KEY)
     raw_data = response.read()
     data = json.loads(raw_data)
