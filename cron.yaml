@@ -1,4 +1,4 @@
 cron:
-- description: tweet every 5 hours
+- description: tweet every 8 hours
   url: /tweet
-  schedule: every 5 hours
+  schedule: every 8 hours

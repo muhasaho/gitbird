@@ -46,7 +46,7 @@ class TweetHandler(webapp2.RequestHandler):
             except IndexError:
                 do_work = True
 
-        message = description + " - " + link
+        message = "#Javascript. " + description + " - " + link
 
         # post and return
         post = postStatus(message)
